@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const response = await axios.get('https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=1', {
+        const response = await axios.get('https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=BTC,ETH', {
             headers: {
                 'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY,
             }
