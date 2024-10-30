@@ -8,7 +8,8 @@
   "dependencies": {
     "@uniswap/v3-periphery": "^1.4.4",
     "axios": "^1.7.7",
-    "ethers": "^5.4"
+    "ethers": "^5.4",
+    "module": "^1.2.5"
   },
   "type": "module"
 }

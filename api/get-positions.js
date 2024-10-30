@@ -1,5 +1,8 @@
 import { ethers } from 'ethers'
-const ABI = require('@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json')
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url);
+const { abi } = require('@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json')
 
 const SUPPORTED_CHAINS = ['Arbitrum', 'Base']
 
@@ -37,7 +40,7 @@ export default async function handler(req, res) {
         for (const chain of SUPPORTED_CHAINS) {
             const infuraURL = `${ENDPOINTS[chain]['infura']}${process.env.INFURA_KEY}`
             const provider = new ethers.providers.JsonRpcProvider(infuraURL)
-            const contract = new ethers.Contract(ENDPOINTS[chain]['uniNFTObserver'], ABI, provider)
+            const contract = new ethers.Contract(ENDPOINTS[chain]['uniNFTObserver'], abi, provider)
 
             const balance = await contract.balanceOf(userAddress)
 
