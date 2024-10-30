@@ -6,6 +6,7 @@
   "author": "v1z",
   "license": "MIT",
   "dependencies": {
+    "@uniswap/v3-periphery": "^1.4.4",
     "axios": "^1.7.7",
     "ethers": "^5.4"
   },

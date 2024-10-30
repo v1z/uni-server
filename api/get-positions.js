@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import { abi } from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
 
 const SUPPORTED_CHAINS = ['Arbitrum', 'Base']
 
