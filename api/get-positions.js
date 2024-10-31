@@ -38,6 +38,8 @@ export default async function handler(req, res) {
         const positions = []
 
         for (const chain of SUPPORTED_CHAINS) {
+            console.log('chain', chain)
+            
             const infuraURL = `${ENDPOINTS[chain]['infura']}${process.env.INFURA_KEY}`
             const provider = new ethers.providers.JsonRpcProvider(infuraURL)
             const contract = new ethers.Contract(ENDPOINTS[chain]['uniNFTObserver'], abi, provider)
@@ -45,13 +47,13 @@ export default async function handler(req, res) {
             const balance = await contract.balanceOf(userAddress)
 
             const tokenIdPromises = []
-            console.log('tokenIdPromises', tokenIdPromises)
 
             for (let i = 0; i < balance; i++) {
                 tokenIdPromises.push(contract.tokenOfOwnerByIndex(userAddress, i))
             }
 
             const tokenIds = await Promise.all(tokenIdPromises)
+            console.log('tokenIds', tokenIds)
 
             const positionPromises = tokenIds.map((tokenId) => contract.positions(tokenId))
             const positionsData = await Promise.all(positionPromises)
