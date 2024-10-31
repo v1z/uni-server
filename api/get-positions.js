@@ -45,6 +45,7 @@ export default async function handler(req, res) {
             const balance = await contract.balanceOf(userAddress)
 
             const tokenIdPromises = []
+            console.log('tokenIdPromises', tokenIdPromises)
 
             for (let i = 0; i < balance; i++) {
                 tokenIdPromises.push(contract.tokenOfOwnerByIndex(userAddress, i))
@@ -70,6 +71,7 @@ export default async function handler(req, res) {
                 }))
 
             const feeData = await Promise.all(feePromises)
+            console.log('feeData', feeData)
 
             const positionsWithFees = nonEmptyPositions
                 .map((pos, index) => ({
@@ -78,6 +80,7 @@ export default async function handler(req, res) {
                 }))
 
             positions.push(...positionsWithFees, ...emptyPositions)
+            console.log('positions', positions)
         }
 
         res.status(200).json(positions);
