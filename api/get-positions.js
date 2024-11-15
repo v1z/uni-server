@@ -47,7 +47,14 @@ export default async function handler(req, res) {
             const provider = new ethers.providers.JsonRpcProvider(infuraURL)
             const contract = new ethers.Contract(ENDPOINTS[chain]['uniNFTObserver'], abi, provider)
 
-            const balance = await contract.balanceOf(userAddress)
+            let balance = 0
+
+            try {
+                balance = await contract.balanceOf(userAddress)
+            } catch (error) {
+                console.log('balance error', error)
+            }
+            
             console.log('balance', balance)
 
             if (balance === 0) {
