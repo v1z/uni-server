@@ -48,8 +48,10 @@ export default async function handler(req, res) {
             const contract = new ethers.Contract(ENDPOINTS[chain]['uniNFTObserver'], abi, provider)
 
             const balance = await contract.balanceOf(userAddress)
+            console.log('balance', balance)
 
             if (balance === 0) {
+                console.log('no positions found')
                 break;
             }
 
