@@ -47,17 +47,15 @@ export default async function handler(req, res) {
             const provider = new ethers.providers.JsonRpcProvider(infuraURL)
             const contract = new ethers.Contract(ENDPOINTS[chain]['uniNFTObserver'], abi, provider)
 
-            let balance = 0
+            let balance = undefined
 
             try {
                 balance = await contract.balanceOf(userAddress)
             } catch (error) {
                 console.log('balance error', error)
             }
-            
-            console.log('balance', balance)
 
-            if (balance === 0) {
+            if (!balance) {
                 console.log('no positions found')
                 break;
             }
@@ -68,11 +66,25 @@ export default async function handler(req, res) {
                 tokenIdPromises.push(contract.tokenOfOwnerByIndex(userAddress, i))
             }
 
-            const tokenIds = await Promise.all(tokenIdPromises)
-            console.log('tokenIds')
+            let tokenIds = []
+
+            try {
+                tokenIds = await Promise.all(tokenIdPromises)
+            } catch (error) {
+                console.log('tokenId error', error)
+                throw new Error;
+            }
 
             const positionPromises = tokenIds.map((tokenId) => contract.positions(tokenId))
-            const positionsData = await Promise.all(positionPromises)
+
+            let positionsData = [] 
+
+            try {
+                positionsData = await Promise.all(positionPromises)
+            } catch (error) {
+                console.log('positions error', error)
+                throw new Error;
+            }
 
             const chainPostions = positionsData.map((position, index) => ({ tokenId: tokenIds[index], ...position, chain }))
 
@@ -87,9 +99,15 @@ export default async function handler(req, res) {
                     amount0Max: FEE_AMOUNT_MAX,
                     amount1Max: FEE_AMOUNT_MAX
                 }))
-
-            const feeData = await Promise.all(feePromises)
-            console.log('feeData')
+            
+            let feeData = []
+            
+            try {
+                feeData = await Promise.all(feePromises)
+            } catch (error) {
+                console.log('fees error', error)
+                throw new Error;
+            }
 
             const positionsWithFees = nonEmptyPositions
                 .map((pos, index) => ({
