@@ -35,6 +35,8 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'userAddress is required' });
     }
 
+    console.log('userAddress', userAddress)
+
     try {
         const positions = []
 
@@ -47,6 +49,10 @@ export default async function handler(req, res) {
 
             const balance = await contract.balanceOf(userAddress)
 
+            if (balance === 0) {
+                break;
+            }
+
             const tokenIdPromises = []
 
             for (let i = 0; i < balance; i++) {
@@ -54,7 +60,7 @@ export default async function handler(req, res) {
             }
 
             const tokenIds = await Promise.all(tokenIdPromises)
-            console.log('tokenIds', tokenIds)
+            console.log('tokenIds')
 
             const positionPromises = tokenIds.map((tokenId) => contract.positions(tokenId))
             const positionsData = await Promise.all(positionPromises)
@@ -74,7 +80,7 @@ export default async function handler(req, res) {
                 }))
 
             const feeData = await Promise.all(feePromises)
-            console.log('feeData', feeData)
+            console.log('feeData')
 
             const positionsWithFees = nonEmptyPositions
                 .map((pos, index) => ({
@@ -83,7 +89,7 @@ export default async function handler(req, res) {
                 }))
 
             positions.push(...positionsWithFees, ...emptyPositions)
-            console.log('positions', positions)
+            console.log('positions')
         }
 
         res.status(200).json(positions);
