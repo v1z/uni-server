@@ -84,6 +84,7 @@ export default async function handler(req, res) {
             const positionPromises = tokenIds.map((tokenId) => contract.positions(tokenId))
 
             let positionsData = [] 
+            console.log('positionsData')
 
             try {
                 positionsData = await Promise.all(positionPromises)
@@ -96,6 +97,7 @@ export default async function handler(req, res) {
 
             const nonEmptyPositions = chainPostions.filter(({liquidity}) => liquidity._hex !== '0x00')
             const emptyPositions = chainPostions.filter(({liquidity}) => liquidity._hex === '0x00')
+            console.log('nonEmptyPositions', nonEmptyPositions)
 
             // request fees only for nonEmptyPositons
             const feePromises = nonEmptyPositions
