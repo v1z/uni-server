@@ -49,6 +49,8 @@ export default async function handler(req, res) {
 
             let balance = undefined
 
+            console.log('balance')
+
             try {
                 balance = await contract.balanceOf(userAddress)
             } catch (error) {
@@ -62,11 +64,15 @@ export default async function handler(req, res) {
 
             const tokenIdPromises = []
 
+            console.log('tokenIdPromises')
+
             for (let i = 0; i < balance; i++) {
                 tokenIdPromises.push(contract.tokenOfOwnerByIndex(userAddress, i))
             }
 
             let tokenIds = []
+
+            console.log('tokenIds')
 
             try {
                 tokenIds = await Promise.all(tokenIdPromises)
@@ -101,6 +107,7 @@ export default async function handler(req, res) {
                 }))
             
             let feeData = []
+            console.log('feeData')
             
             try {
                 feeData = await Promise.all(feePromises)
