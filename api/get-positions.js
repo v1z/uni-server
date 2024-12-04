@@ -72,7 +72,7 @@ export default async function handler(req, res) {
 
             let tokenIds = []
 
-            console.log('tokenIds', tokenIdPromises)
+            console.log('tokenIds', tokenIdPromises.length)
 
             try {
                 tokenIds = await Promise.all(tokenIdPromises)
